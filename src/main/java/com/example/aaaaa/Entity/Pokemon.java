@@ -1,5 +1,6 @@
 package com.example.aaaaa.Entity;
 
+import jakarta.jws.soap.SOAPBinding;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +14,10 @@ public class Pokemon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_pokemon", nullable = false)
     private Integer id;
+
+    @ManyToOne
+    @JoinColumn(name = "id_user",nullable = false)
+    private User user;
 
     @Column(name = "nombre", nullable = false, length = 45)
     private String nombre;

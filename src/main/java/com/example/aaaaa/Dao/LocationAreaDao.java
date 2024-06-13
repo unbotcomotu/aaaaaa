@@ -31,10 +31,13 @@ public class LocationAreaDao {
         Integer maxRatio=0;
         String nombreMetodo=null;
         for(HashMap<String,Object> map:content){
-            Integer ratio=Integer.parseInt((String) ((HashMap<String,Object>) map.get("version_details")).get("rate"));
-            if(ratio>maxRatio){
-                maxRatio=ratio;
-                nombreMetodo=(String) ((HashMap<String,Object>) ((HashMap<String,Object>) map.get("version_details")).get("version")).get("name");
+            ArrayList<HashMap<String,Object>> versiones=(ArrayList<HashMap<String,Object>>)map.get("version_details");
+            for(HashMap<String,Object> version:versiones){
+                Integer ratio=(Integer) version.get("rate");
+                if(ratio>maxRatio){
+                    maxRatio=ratio;
+                    nombreMetodo=(String) ((HashMap<String,Object>) version.get("version")).get("name");
+                }
             }
         }
         methodResponse.put("ratio",maxRatio);
