@@ -8,10 +8,7 @@ import com.example.aaaaa.Repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 import java.util.logging.Handler;
@@ -178,5 +175,38 @@ public class KiwiController {
         response.put("content", listaLugares);
         response.put("pokemon",nombre);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("registrarUsuario")
+    public ResponseEntity<HashMap<String,Object>>registrarUsuario(@RequestBody User user){
+        String nombre=user.getNombre();
+        String contrasena=user.getPassword();
+        String correo=user.getUsername();
+        HashMap<String, Object> response = new HashMap<>();
+        HashMap<String, Object> errors = new HashMap<>();
+        Boolean validacion=true;
+        if(nombre==null||nombre.isEmpty()){
+            response.put("status","error");
+            errors.put("nombre","Ingrese un nombre");
+            validacion=false;
+        }
+        if(contrasena==null|| contrasena.isEmpty()){
+            response.put("status","error");
+            errors.put("contrasena","Ingrese su contraseña");
+            validacion=false;
+        }
+        if(correo==null|| correo.isEmpty()){
+            response.put("status","error");
+            errors.put("correo","Ingrese su correo");
+            validacion=false;
+        }
+        if(validacion){
+            userRepository.save(user);
+            response.put("status","success");
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        }else {
+            response.put("errors",errors);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
     }
 }

@@ -70,7 +70,6 @@ public class LocationAreaDao {
         HashMap<String,Object>methodResponse= new HashMap<>();
         RestTemplate restTemplate=new RestTemplate();
         ResponseEntity<encounter_aiuda>response=restTemplate.getForEntity("https://pokeapi.co/api/v2/location-area/"+nombreLugar+"/", encounter_aiuda.class);
-        List<String>listaLugares=new ArrayList<>();
         Integer maxRatio=0;
         String nombreMetodo="";
         for(encounter_method_rates encounter_method_rates :response.getBody().getEncounter_method_rates()){
